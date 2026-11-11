@@ -2,758 +2,769 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LokSanskriti | India's Living Heritage</title>
-    <meta name="description" content="Discover, explore and preserve India's rich cultural heritage with LokSanskriti.">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>LokSanskriti | India's Living Heritage</title>
+        <meta name="description" content="Discover, explore and preserve India's rich cultural heritage with LokSanskriti.">
 
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+        <!-- FAVICON -->
+        <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23103729'/%3E%3Ctext x='28' y='46' font-family='Georgia,serif' font-size='44' font-weight='bold' text-anchor='middle' fill='%23e7a45e'%3EL%3C/text%3E%3Ccircle cx='46' cy='45' r='3.5' fill='%23e7a45e'/%3E%3C/svg%3E">
 
-    <style>
-         :root {
-            --green: #174d3b;
-            --green-dark: #103729;
-            --cream: #faf7ef;
-            --orange: #d47a37;
-            --text: #24332d;
-            --muted: #718078;
-            --white: #ffffff;
-            --border: #e8e5dc;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        html {
-            scroll-behavior: smooth;
-        }
-        
-        body {
-            font-family: "DM Sans", sans-serif;
-            background: var(--cream);
-            color: var(--text);
-        }
-        
-        button,
-        input,
-        select,
-        textarea {
-            font: inherit;
-        }
-        
-        button {
-            cursor: pointer;
-        }
-        
-        .container {
-            width: min(1160px, 92%);
-            margin: auto;
-        }
-        /* NAVBAR */
-        
-        nav {
-            background: var(--green-dark);
-            color: white;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-        
-        .navbar {
-            min-height: 76px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 20px;
-        }
-        
-        .logo {
-            color: white;
-            text-decoration: none;
-            font-family: "Playfair Display", serif;
-            font-size: 27px;
-            font-weight: 800;
-        }
-        
-        .logo span {
-            color: #e7a45e;
-        }
-        
-        .nav-links {
-            display: flex;
-            gap: 27px;
-            align-items: center;
-        }
-        
-        .nav-links a {
-            color: #e9eee9;
-            text-decoration: none;
-            font-size: 14px;
-        }
-        
-        .nav-links a:hover {
-            color: #e7a45e;
-        }
-        
-        .nav-button {
-            background: #e7a45e;
-            color: #183b2e !important;
-            padding: 11px 18px;
-            border-radius: 7px;
-            font-weight: 700;
-        }
-        /* HERO */
-        
-        .hero {
-            background: linear-gradient(90deg, rgba(12, 38, 29, .94), rgba(12, 38, 29, .60)), url("https://images.unsplash.com/photo-1514222134-b57cbb8ce073?auto=format&fit=crop&w=1800&q=85");
-            background-size: cover;
-            background-position: center;
-            color: white;
-            padding: 105px 0 100px;
-        }
-        
-        .hero-content {
-            max-width: 720px;
-        }
-        
-        .eyebrow {
-            color: #e9ad6d;
-            font-weight: 700;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            font-size: 12px;
-            margin-bottom: 20px;
-        }
-        
-        .hero h1 {
-            font-family: "Playfair Display", serif;
-            font-size: clamp(42px, 6vw, 72px);
-            line-height: 1.12;
-            margin-bottom: 22px;
-        }
-        
-        .hero h1 span {
-            color: #e7a45e;
-        }
-        
-        .hero p {
-            color: #e2e8e3;
-            font-size: 17px;
-            line-height: 1.8;
-            max-width: 620px;
-            margin-bottom: 30px;
-        }
-        
-        .hero-actions {
-            display: flex;
-            gap: 14px;
-            flex-wrap: wrap;
-        }
-        
-        .btn {
-            display: inline-block;
-            border: none;
-            border-radius: 7px;
-            padding: 14px 22px;
-            text-decoration: none;
-            font-weight: 700;
-            transition: .2s;
-        }
-        
-        .btn-primary {
-            background: #e7a45e;
-            color: #183b2e;
-        }
-        
-        .btn-primary:hover {
-            background: #f2ba7d;
-            transform: translateY(-2px);
-        }
-        
-        .btn-outline {
-            border: 1px solid rgba(255, 255, 255, .7);
-            color: white;
-        }
-        
-        .btn-outline:hover {
-            background: white;
-            color: var(--green);
-        }
-        /* STATS */
-        
-        .stats-section {
-            margin-top: -35px;
-            position: relative;
-            z-index: 2;
-        }
-        
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            background: white;
-            border-radius: 13px;
-            box-shadow: 0 12px 35px rgba(0, 0, 0, .08);
-            overflow: hidden;
-        }
-        
-        .stat-card {
-            padding: 27px 15px;
-            text-align: center;
-            border-right: 1px solid var(--border);
-        }
-        
-        .stat-card:last-child {
-            border-right: none;
-        }
-        
-        .stat-card h2 {
-            color: var(--green);
-            font-size: 34px;
-            margin-bottom: 5px;
-        }
-        
-        .stat-card p {
-            color: var(--muted);
-            font-size: 13px;
-        }
-        /* COMMON SECTION */
-        
-        section {
-            padding: 85px 0;
-        }
-        
-        .section-heading {
-            text-align: center;
-            max-width: 700px;
-            margin: 0 auto 38px;
-        }
-        
-        .section-heading .eyebrow {
-            color: var(--orange);
-            margin-bottom: 12px;
-        }
-        
-        .section-heading h2 {
-            font-family: "Playfair Display", serif;
-            font-size: clamp(30px, 4vw, 43px);
-            color: var(--green-dark);
-            margin-bottom: 14px;
-        }
-        
-        .section-heading p {
-            color: var(--muted);
-            line-height: 1.8;
-        }
-        /* SEARCH AND FILTERS */
-        
-        .explore-section {
-            padding-top: 85px;
-        }
-        
-        .search-box {
-            display: flex;
-            gap: 10px;
-            max-width: 750px;
-            margin: 0 auto 22px;
-        }
-        
-        .search-box input {
-            flex: 1;
-            min-width: 0;
-            padding: 15px 17px;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            outline: none;
-            background: white;
-        }
-        
-        .search-box input:focus,
-        .filter-row select:focus {
-            border-color: var(--green);
-        }
-        
-        .search-box button {
-            background: var(--green);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 0 25px;
-            font-weight: 700;
-        }
-        
-        .filter-row {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-bottom: 35px;
-        }
-        
-        .filter-row select {
-            padding: 12px 15px;
-            border: 1px solid var(--border);
-            border-radius: 7px;
-            background: white;
-            color: var(--text);
-            min-width: 155px;
-            outline: none;
-        }
-        /* TRADITION CARDS */
-        
-        .tradition-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 23px;
-        }
-        
-        .tradition-card {
-            background: white;
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            overflow: hidden;
-            transition: .25s;
-        }
-        
-        .tradition-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 14px 35px rgba(0, 0, 0, .09);
-        }
-        
-        .card-image {
-            height: 190px;
-            background: #e8e5dc;
-            overflow: hidden;
-        }
-        
-        .card-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .card-content {
-            padding: 21px;
-        }
-        
-        .card-tag {
-            display: inline-block;
-            background: #edf4ee;
-            color: var(--green);
-            padding: 6px 10px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 700;
-            margin-bottom: 12px;
-        }
-        
-        .card-content h3 {
-            font-family: "Playfair Display", serif;
-            font-size: 22px;
-            color: var(--green-dark);
-            margin-bottom: 9px;
-        }
-        
-        .card-content p {
-            color: var(--muted);
-            font-size: 13px;
-            line-height: 1.7;
-            margin-bottom: 12px;
-        }
-        
-        .card-meta {
-            border-top: 1px solid var(--border);
-            padding-top: 12px;
-            color: #65756c;
-            font-size: 12px;
-        }
-        
-        .loading-message,
-        .empty-message {
-            text-align: center;
-            color: var(--muted);
-            padding: 35px;
-            grid-column: 1 / -1;
-        }
-        /* MAP */
-        
-        .map-section {
-            background: #f0eee5;
-        }
-        
-        #heritageMap {
-            height: 470px;
-            width: 100%;
-            border-radius: 13px;
-            border: 1px solid var(--border);
-            z-index: 1;
-        }
-        
-        .map-note {
-            text-align: center;
-            margin-top: 15px;
-            font-size: 13px;
-            color: var(--muted);
-        }
-        /* GALLERY */
-        
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 18px;
-        }
-        
-        .gallery-item {
-            height: 245px;
-            border-radius: 11px;
-            overflow: hidden;
-            position: relative;
-            background: #ddd;
-        }
-        
-        .gallery-item img {
-            height: 100%;
-            width: 100%;
-            object-fit: cover;
-            transition: .4s;
-        }
-        
-        .gallery-item:hover img {
-            transform: scale(1.06);
-        }
-        
-        .gallery-caption {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 35px 17px 16px;
-            color: white;
-            font-weight: 700;
-            background: linear-gradient(transparent, rgba(0, 0, 0, .8));
-        }
-        /* ABOUT */
-        
-        .about-section {
-            background: var(--green-dark);
-            color: white;
-        }
-        
-        .about-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 55px;
-            align-items: center;
-        }
-        
-        .about-image img {
-            width: 100%;
-            height: 390px;
-            object-fit: cover;
-            border-radius: 13px;
-        }
-        
-        .about-content .eyebrow {
-            color: #e7a45e;
-        }
-        
-        .about-content h2 {
-            font-family: "Playfair Display", serif;
-            font-size: 40px;
-            margin-bottom: 20px;
-        }
-        
-        .about-content p {
-            color: #d5e0d8;
-            line-height: 1.9;
-            margin-bottom: 17px;
-        }
-        /* SUBMISSION FORM */
-        
-        .submit-section {
-            background: #f4f1e8;
-        }
-        
-        .form-container {
-            max-width: 760px;
-            margin: auto;
-            padding: 32px;
-            background: white;
-            border-radius: 13px;
-            border: 1px solid var(--border);
-        }
-        
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 18px;
-        }
-        
-        .form-group {
-            margin-bottom: 17px;
-        }
-        
-        .form-group.full {
-            grid-column: 1 / -1;
-        }
-        
-        .form-group label {
-            display: block;
-            font-size: 13px;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-        
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 13px;
-            border: 1px solid var(--border);
-            border-radius: 7px;
-            outline: none;
-            background: #fff;
-        }
-        
-        .form-group textarea {
-            min-height: 120px;
-            resize: vertical;
-        }
-        
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            border-color: var(--green);
-        }
-        
-        .submit-button {
-            background: var(--green);
-            color: white;
-            width: 100%;
-            border: none;
-            padding: 15px;
-            border-radius: 7px;
-            font-weight: 700;
-        }
-        
-        .submit-button:hover {
-            background: var(--green-dark);
-        }
-        /* FOOTER */
-        
-        footer {
-            background: #0b2a20;
-            color: white;
-            padding: 45px 0 20px;
-        }
-        
-        .footer-content {
-            display: flex;
-            justify-content: space-between;
-            gap: 30px;
-            flex-wrap: wrap;
-            margin-bottom: 30px;
-        }
-        
-        .footer-content p {
-            color: #c1d0c6;
-            max-width: 430px;
-            line-height: 1.8;
-            margin-top: 12px;
-            font-size: 13px;
-        }
-        
-        .footer-links {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-        
-        .footer-links a {
-            color: #dce6df;
-            text-decoration: none;
-            font-size: 13px;
-        }
-        
-        .copyright {
-            border-top: 1px solid #315044;
-            padding-top: 20px;
-            text-align: center;
-            color: #aebfb4;
-            font-size: 12px;
-        }
-        /* TOAST */
-        
-        #toast {
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            background: var(--green-dark);
-            color: white;
-            padding: 15px 20px;
-            border-radius: 8px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, .2);
-            display: none;
-            z-index: 2000;
-            max-width: 320px;
-        }
-        
-        #toast.show {
-            display: block;
-        }
-        
-        @media (max-width: 850px) {
-            .tradition-grid,
-            .gallery-grid {
-                grid-template-columns: repeat(2, 1fr);
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>LokSanskriti | India's Living Heritage</title>
+        <meta name="description" content="Discover, explore and preserve India's rich cultural heritage with LokSanskriti.">
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
+        <style>
+             :root {
+                --green: #174d3b;
+                --green-dark: #103729;
+                --cream: #faf7ef;
+                --orange: #d47a37;
+                --text: #24332d;
+                --muted: #718078;
+                --white: #ffffff;
+                --border: #e8e5dc;
             }
-            .about-grid {
-                grid-template-columns: 1fr;
+            
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
             }
-        }
-        
-        @media (max-width: 600px) {
+            
+            html {
+                scroll-behavior: smooth;
+            }
+            
+            body {
+                font-family: "DM Sans", sans-serif;
+                background: var(--cream);
+                color: var(--text);
+            }
+            
+            button,
+            input,
+            select,
+            textarea {
+                font: inherit;
+            }
+            
+            button {
+                cursor: pointer;
+            }
+            
+            .container {
+                width: min(1160px, 92%);
+                margin: auto;
+            }
+            /* NAVBAR */
+            
+            nav {
+                background: var(--green-dark);
+                color: white;
+                position: sticky;
+                top: 0;
+                z-index: 1000;
+            }
+            
             .navbar {
-                padding: 15px 0;
-                flex-wrap: wrap;
+                min-height: 76px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 20px;
             }
+            
+            .logo {
+                color: white;
+                text-decoration: none;
+                font-family: "Playfair Display", serif;
+                font-size: 27px;
+                font-weight: 800;
+            }
+            
+            .logo span {
+                color: #e7a45e;
+            }
+            
             .nav-links {
-                width: 100%;
-                gap: 15px;
+                display: flex;
+                gap: 27px;
+                align-items: center;
+            }
+            
+            .nav-links a {
+                color: #e9eee9;
+                text-decoration: none;
+                font-size: 14px;
+            }
+            
+            .nav-links a:hover {
+                color: #e7a45e;
+            }
+            
+            .nav-button {
+                background: #e7a45e;
+                color: #183b2e !important;
+                padding: 11px 18px;
+                border-radius: 7px;
+                font-weight: 700;
+            }
+            /* HERO */
+            
+            .hero {
+                background: linear-gradient(90deg, rgba(12, 38, 29, .94), rgba(12, 38, 29, .60)), url("https://images.unsplash.com/photo-1514222134-b57cbb8ce073?auto=format&fit=crop&w=1800&q=85");
+                background-size: cover;
+                background-position: center;
+                color: white;
+                padding: 105px 0 100px;
+            }
+            
+            .hero-content {
+                max-width: 720px;
+            }
+            
+            .eyebrow {
+                color: #e9ad6d;
+                font-weight: 700;
+                letter-spacing: 2px;
+                text-transform: uppercase;
+                font-size: 12px;
+                margin-bottom: 20px;
+            }
+            
+            .hero h1 {
+                font-family: "Playfair Display", serif;
+                font-size: clamp(42px, 6vw, 72px);
+                line-height: 1.12;
+                margin-bottom: 22px;
+            }
+            
+            .hero h1 span {
+                color: #e7a45e;
+            }
+            
+            .hero p {
+                color: #e2e8e3;
+                font-size: 17px;
+                line-height: 1.8;
+                max-width: 620px;
+                margin-bottom: 30px;
+            }
+            
+            .hero-actions {
+                display: flex;
+                gap: 14px;
                 flex-wrap: wrap;
             }
-            .nav-links a {
-                font-size: 12px;
+            
+            .btn {
+                display: inline-block;
+                border: none;
+                border-radius: 7px;
+                padding: 14px 22px;
+                text-decoration: none;
+                font-weight: 700;
+                transition: .2s;
             }
-            .hero {
-                padding: 75px 0;
+            
+            .btn-primary {
+                background: #e7a45e;
+                color: #183b2e;
             }
+            
+            .btn-primary:hover {
+                background: #f2ba7d;
+                transform: translateY(-2px);
+            }
+            
+            .btn-outline {
+                border: 1px solid rgba(255, 255, 255, .7);
+                color: white;
+            }
+            
+            .btn-outline:hover {
+                background: white;
+                color: var(--green);
+            }
+            /* STATS */
+            
+            .stats-section {
+                margin-top: -35px;
+                position: relative;
+                z-index: 2;
+            }
+            
             .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                background: white;
+                border-radius: 13px;
+                box-shadow: 0 12px 35px rgba(0, 0, 0, .08);
+                overflow: hidden;
             }
-            .stat-card:nth-child(2) {
+            
+            .stat-card {
+                padding: 27px 15px;
+                text-align: center;
+                border-right: 1px solid var(--border);
+            }
+            
+            .stat-card:last-child {
                 border-right: none;
             }
-            .stat-card:nth-child(-n+2) {
-                border-bottom: 1px solid var(--border);
+            
+            .stat-card h2 {
+                color: var(--green);
+                font-size: 34px;
+                margin-bottom: 5px;
             }
-            .tradition-grid,
-            .gallery-grid {
-                grid-template-columns: 1fr;
+            
+            .stat-card p {
+                color: var(--muted);
+                font-size: 13px;
             }
+            /* COMMON SECTION */
+            
+            section {
+                padding: 85px 0;
+            }
+            
+            .section-heading {
+                text-align: center;
+                max-width: 700px;
+                margin: 0 auto 38px;
+            }
+            
+            .section-heading .eyebrow {
+                color: var(--orange);
+                margin-bottom: 12px;
+            }
+            
+            .section-heading h2 {
+                font-family: "Playfair Display", serif;
+                font-size: clamp(30px, 4vw, 43px);
+                color: var(--green-dark);
+                margin-bottom: 14px;
+            }
+            
+            .section-heading p {
+                color: var(--muted);
+                line-height: 1.8;
+            }
+            /* SEARCH AND FILTERS */
+            
+            .explore-section {
+                padding-top: 85px;
+            }
+            
             .search-box {
-                flex-direction: column;
+                display: flex;
+                gap: 10px;
+                max-width: 750px;
+                margin: 0 auto 22px;
             }
+            
+            .search-box input {
+                flex: 1;
+                min-width: 0;
+                padding: 15px 17px;
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                outline: none;
+                background: white;
+            }
+            
+            .search-box input:focus,
+            .filter-row select:focus {
+                border-color: var(--green);
+            }
+            
             .search-box button {
-                padding: 14px;
+                background: var(--green);
+                color: white;
+                border: none;
+                border-radius: 8px;
+                padding: 0 25px;
+                font-weight: 700;
             }
-            .form-grid {
-                grid-template-columns: 1fr;
+            
+            .filter-row {
+                display: flex;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 12px;
+                margin-bottom: 35px;
             }
-            .form-group.full {
-                grid-column: auto;
+            
+            .filter-row select {
+                padding: 12px 15px;
+                border: 1px solid var(--border);
+                border-radius: 7px;
+                background: white;
+                color: var(--text);
+                min-width: 155px;
+                outline: none;
             }
-            .form-container {
-                padding: 20px;
+            /* TRADITION CARDS */
+            
+            .tradition-grid {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 23px;
             }
+            
+            .tradition-card {
+                background: white;
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                overflow: hidden;
+                transition: .25s;
+            }
+            
+            .tradition-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 14px 35px rgba(0, 0, 0, .09);
+            }
+            
+            .card-image {
+                height: 190px;
+                background: #e8e5dc;
+                overflow: hidden;
+            }
+            
+            .card-image img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+            
+            .card-content {
+                padding: 21px;
+            }
+            
+            .card-tag {
+                display: inline-block;
+                background: #edf4ee;
+                color: var(--green);
+                padding: 6px 10px;
+                border-radius: 20px;
+                font-size: 11px;
+                font-weight: 700;
+                margin-bottom: 12px;
+            }
+            
+            .card-content h3 {
+                font-family: "Playfair Display", serif;
+                font-size: 22px;
+                color: var(--green-dark);
+                margin-bottom: 9px;
+            }
+            
+            .card-content p {
+                color: var(--muted);
+                font-size: 13px;
+                line-height: 1.7;
+                margin-bottom: 12px;
+            }
+            
+            .card-meta {
+                border-top: 1px solid var(--border);
+                padding-top: 12px;
+                color: #65756c;
+                font-size: 12px;
+            }
+            
+            .loading-message,
+            .empty-message {
+                text-align: center;
+                color: var(--muted);
+                padding: 35px;
+                grid-column: 1 / -1;
+            }
+            /* MAP */
+            
+            .map-section {
+                background: #f0eee5;
+            }
+            
             #heritageMap {
-                height: 350px;
+                height: 470px;
+                width: 100%;
+                border-radius: 13px;
+                border: 1px solid var(--border);
+                z-index: 1;
             }
+            
+            .map-note {
+                text-align: center;
+                margin-top: 15px;
+                font-size: 13px;
+                color: var(--muted);
+            }
+            /* GALLERY */
+            
+            .gallery-grid {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 18px;
+            }
+            
+            .gallery-item {
+                height: 245px;
+                border-radius: 11px;
+                overflow: hidden;
+                position: relative;
+                background: #ddd;
+            }
+            
+            .gallery-item img {
+                height: 100%;
+                width: 100%;
+                object-fit: cover;
+                transition: .4s;
+            }
+            
+            .gallery-item:hover img {
+                transform: scale(1.06);
+            }
+            
+            .gallery-caption {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                padding: 35px 17px 16px;
+                color: white;
+                font-weight: 700;
+                background: linear-gradient(transparent, rgba(0, 0, 0, .8));
+            }
+            /* ABOUT */
+            
+            .about-section {
+                background: var(--green-dark);
+                color: white;
+            }
+            
+            .about-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 55px;
+                align-items: center;
+            }
+            
             .about-image img {
-                height: 280px;
+                width: 100%;
+                height: 390px;
+                object-fit: cover;
+                border-radius: 13px;
             }
-        }
-    </style>
-</head>
+            
+            .about-content .eyebrow {
+                color: #e7a45e;
+            }
+            
+            .about-content h2 {
+                font-family: "Playfair Display", serif;
+                font-size: 40px;
+                margin-bottom: 20px;
+            }
+            
+            .about-content p {
+                color: #d5e0d8;
+                line-height: 1.9;
+                margin-bottom: 17px;
+            }
+            /* SUBMISSION FORM */
+            
+            .submit-section {
+                background: #f4f1e8;
+            }
+            
+            .form-container {
+                max-width: 760px;
+                margin: auto;
+                padding: 32px;
+                background: white;
+                border-radius: 13px;
+                border: 1px solid var(--border);
+            }
+            
+            .form-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 18px;
+            }
+            
+            .form-group {
+                margin-bottom: 17px;
+            }
+            
+            .form-group.full {
+                grid-column: 1 / -1;
+            }
+            
+            .form-group label {
+                display: block;
+                font-size: 13px;
+                font-weight: 700;
+                margin-bottom: 8px;
+            }
+            
+            .form-group input,
+            .form-group select,
+            .form-group textarea {
+                width: 100%;
+                padding: 13px;
+                border: 1px solid var(--border);
+                border-radius: 7px;
+                outline: none;
+                background: #fff;
+            }
+            
+            .form-group textarea {
+                min-height: 120px;
+                resize: vertical;
+            }
+            
+            .form-group input:focus,
+            .form-group select:focus,
+            .form-group textarea:focus {
+                border-color: var(--green);
+            }
+            
+            .submit-button {
+                background: var(--green);
+                color: white;
+                width: 100%;
+                border: none;
+                padding: 15px;
+                border-radius: 7px;
+                font-weight: 700;
+            }
+            
+            .submit-button:hover {
+                background: var(--green-dark);
+            }
+            /* FOOTER */
+            
+            footer {
+                background: #0b2a20;
+                color: white;
+                padding: 45px 0 20px;
+            }
+            
+            .footer-content {
+                display: flex;
+                justify-content: space-between;
+                gap: 30px;
+                flex-wrap: wrap;
+                margin-bottom: 30px;
+            }
+            
+            .footer-content p {
+                color: #c1d0c6;
+                max-width: 430px;
+                line-height: 1.8;
+                margin-top: 12px;
+                font-size: 13px;
+            }
+            
+            .footer-links {
+                display: flex;
+                gap: 20px;
+                flex-wrap: wrap;
+            }
+            
+            .footer-links a {
+                color: #dce6df;
+                text-decoration: none;
+                font-size: 13px;
+            }
+            
+            .copyright {
+                border-top: 1px solid #315044;
+                padding-top: 20px;
+                text-align: center;
+                color: #aebfb4;
+                font-size: 12px;
+            }
+            /* TOAST */
+            
+            #toast {
+                position: fixed;
+                bottom: 25px;
+                right: 25px;
+                background: var(--green-dark);
+                color: white;
+                padding: 15px 20px;
+                border-radius: 8px;
+                box-shadow: 0 8px 25px rgba(0, 0, 0, .2);
+                display: none;
+                z-index: 2000;
+                max-width: 320px;
+            }
+            
+            #toast.show {
+                display: block;
+            }
+            
+            @media (max-width: 850px) {
+                .tradition-grid,
+                .gallery-grid {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+                .about-grid {
+                    grid-template-columns: 1fr;
+                }
+            }
+            
+            @media (max-width: 600px) {
+                .navbar {
+                    padding: 15px 0;
+                    flex-wrap: wrap;
+                }
+                .nav-links {
+                    width: 100%;
+                    gap: 15px;
+                    flex-wrap: wrap;
+                }
+                .nav-links a {
+                    font-size: 12px;
+                }
+                .hero {
+                    padding: 75px 0;
+                }
+                .stats-grid {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+                .stat-card:nth-child(2) {
+                    border-right: none;
+                }
+                .stat-card:nth-child(-n+2) {
+                    border-bottom: 1px solid var(--border);
+                }
+                .tradition-grid,
+                .gallery-grid {
+                    grid-template-columns: 1fr;
+                }
+                .search-box {
+                    flex-direction: column;
+                }
+                .search-box button {
+                    padding: 14px;
+                }
+                .form-grid {
+                    grid-template-columns: 1fr;
+                }
+                .form-group.full {
+                    grid-column: auto;
+                }
+                .form-container {
+                    padding: 20px;
+                }
+                #heritageMap {
+                    height: 350px;
+                }
+                .about-image img {
+                    height: 280px;
+                }
+            }
+        </style>
+    </head>
 
-<body>
+    <body>
 
-    <!-- NAVBAR -->
-    <nav>
-        <div class="container navbar">
-            <a href="#" class="logo">Lok<span>Sanskriti.</span></a>
+        <!-- NAVBAR -->
+        <nav>
+            <div class="container navbar">
+                <a href="#" class="logo">Lok<span>Sanskriti.</span></a>
 
-            <div class="nav-links">
-                <a href="#home">Home</a>
-                <a href="#explore">Explore</a>
-                <a href="#map">Heritage Map</a>
-                <a href="#gallery">Gallery</a>
-                <a href="#about">About</a>
-                <a href="#submit" class="nav-button">Contribute</a>
+                <div class="nav-links">
+                    <a href="#home">Home</a>
+                    <a href="#explore">Explore</a>
+                    <a href="#map">Heritage Map</a>
+                    <a href="#gallery">Gallery</a>
+                    <a href="#about">About</a>
+                    <a href="#submit" class="nav-button">Contribute</a>
+                </div>
             </div>
-        </div>
-    </nav>
+        </nav>
 
-    <!-- HERO -->
-    <header class="hero" id="home">
-        <div class="container">
-            <div class="hero-content">
-                <div class="eyebrow">Discover • Preserve • Celebrate</div>
+        <!-- HERO -->
+        <header class="hero" id="home">
+            <div class="container">
+                <div class="hero-content">
+                    <div class="eyebrow">Discover • Preserve • Celebrate</div>
 
-                <h1>Every Tradition Tells a <span>Story.</span></h1>
+                    <h1>Every Tradition Tells a <span>Story.</span></h1>
 
-                <p>
-                    Explore India's extraordinary cultural heritage. Discover traditional art, folk music, dance, festivals and stories that connect generations.
-                </p>
+                    <p>
+                        Explore India's extraordinary cultural heritage. Discover traditional art, folk music, dance, festivals and stories that connect generations.
+                    </p>
 
-                <div class="hero-actions">
-                    <a href="#explore" class="btn btn-primary">Explore Heritage</a>
-                    <a href="#about" class="btn btn-outline">Discover Our Mission</a>
+                    <div class="hero-actions">
+                        <a href="#explore" class="btn btn-primary">Explore Heritage</a>
+                        <a href="#about" class="btn btn-outline">Discover Our Mission</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- STATS -->
+        <div class="container stats-section">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h2 id="statTotal">—</h2>
+                    <p>Heritage Records</p>
+                </div>
+
+                <div class="stat-card">
+                    <h2 id="statStates">—</h2>
+                    <p>States Represented</p>
+                </div>
+
+                <div class="stat-card">
+                    <h2 id="statCategories">—</h2>
+                    <p>Categories</p>
+                </div>
+
+                <div class="stat-card">
+                    <h2 id="statPriority">—</h2>
+                    <p>Priority Records</p>
                 </div>
             </div>
         </div>
-    </header>
 
-    <!-- STATS -->
-    <div class="container stats-section">
-        <div class="stats-grid">
-            <div class="stat-card">
-                <h2 id="statTotal">—</h2>
-                <p>Heritage Records</p>
-            </div>
+        <!-- EXPLORE -->
+        <section class="explore-section" id="explore">
+            <div class="container">
 
-            <div class="stat-card">
-                <h2 id="statStates">—</h2>
-                <p>States Represented</p>
-            </div>
+                <div class="section-heading">
+                    <div class="eyebrow">Explore India's Culture</div>
+                    <h2>Discover Living Traditions</h2>
+                    <p>
+                        Search and explore cultural traditions from different regions of India. Every record preserves a part of our identity.
+                    </p>
+                </div>
 
-            <div class="stat-card">
-                <h2 id="statCategories">—</h2>
-                <p>Categories</p>
-            </div>
+                <div class="search-box">
+                    <input type="search" id="searchInput" placeholder="Search traditions, states, languages...">
+                    <button type="button" id="searchButton">Search</button>
+                </div>
 
-            <div class="stat-card">
-                <h2 id="statPriority">—</h2>
-                <p>Priority Records</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- EXPLORE -->
-    <section class="explore-section" id="explore">
-        <div class="container">
-
-            <div class="section-heading">
-                <div class="eyebrow">Explore India's Culture</div>
-                <h2>Discover Living Traditions</h2>
-                <p>
-                    Search and explore cultural traditions from different regions of India. Every record preserves a part of our identity.
-                </p>
-            </div>
-
-            <div class="search-box">
-                <input type="search" id="searchInput" placeholder="Search traditions, states, languages...">
-                <button type="button" id="searchButton">Search</button>
-            </div>
-
-            <div class="filter-row">
-                <select id="stateFilter">
+                <div class="filter-row">
+                    <select id="stateFilter">
                     <option value="">All States</option>
                     <option value="Bihar">Bihar</option>
                     <option value="Assam">Assam</option>
@@ -762,7 +773,7 @@
                     <option value="Odisha">Odisha</option>
                 </select>
 
-                <select id="categoryFilter">
+                    <select id="categoryFilter">
                     <option value="">All Categories</option>
                     <option value="Folk Music">Folk Music</option>
                     <option value="Folk Dance">Folk Dance</option>
@@ -772,7 +783,7 @@
                     <option value="Folk Song">Folk Song</option>
                 </select>
 
-                <select id="languageFilter">
+                    <select id="languageFilter">
                     <option value="">All Languages</option>
                     <option value="Bengali">Bengali</option>
                     <option value="Odia">Odia</option>
@@ -781,133 +792,133 @@
                     <option value="Assamese">Assamese</option>
                     <option value="Bhojpuri">Bhojpuri</option>
                 </select>
-            </div>
-
-            <div class="tradition-grid" id="traditionGrid">
-                <div class="loading-message">Loading heritage records...</div>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- MAP -->
-    <section class="map-section" id="map">
-        <div class="container">
-            <div class="section-heading">
-                <div class="eyebrow">Explore by Geography</div>
-                <h2>Explore India's Heritage Map</h2>
-                <p>
-                    Explore cultural heritage across different regions of India through an interactive map.
-                </p>
-            </div>
-
-            <div id="heritageMap"></div>
-
-            <p class="map-note">
-                Select a map marker to explore traditions from that region.
-            </p>
-        </div>
-    </section>
-
-    <!-- GALLERY -->
-    <section id="gallery">
-        <div class="container">
-            <div class="section-heading">
-                <div class="eyebrow">Visual Heritage</div>
-                <h2>Stories Through Images</h2>
-                <p>
-                    A glimpse into India's diverse art, architecture, festivals and cultural expressions.
-                </p>
-            </div>
-
-            <div class="gallery-grid">
-                <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1577083552431-6e5fd01aa342?auto=format&fit=crop&w=900&q=80" alt="Traditional Indian art" loading="lazy">
-                    <div class="gallery-caption">Traditional Art</div>
                 </div>
 
-                <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1504609813442-a8924e83f76e?auto=format&fit=crop&w=900&q=80" alt="Indian cultural festival" loading="lazy">
-                    <div class="gallery-caption">Festivals of India</div>
+                <div class="tradition-grid" id="traditionGrid">
+                    <div class="loading-message">Loading heritage records...</div>
                 </div>
 
-                <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1531058020387-3be344556be6?auto=format&fit=crop&w=900&q=80" alt="Cultural performance" loading="lazy">
-                    <div class="gallery-caption">Cultural Performances</div>
+            </div>
+        </section>
+
+        <!-- MAP -->
+        <section class="map-section" id="map">
+            <div class="container">
+                <div class="section-heading">
+                    <div class="eyebrow">Explore by Geography</div>
+                    <h2>Explore India's Heritage Map</h2>
+                    <p>
+                        Explore cultural heritage across different regions of India through an interactive map.
+                    </p>
+                </div>
+
+                <div id="heritageMap"></div>
+
+                <p class="map-note">
+                    Select a map marker to explore traditions from that region.
+                </p>
+            </div>
+        </section>
+
+        <!-- GALLERY -->
+        <section id="gallery">
+            <div class="container">
+                <div class="section-heading">
+                    <div class="eyebrow">Visual Heritage</div>
+                    <h2>Stories Through Images</h2>
+                    <p>
+                        A glimpse into India's diverse art, architecture, festivals and cultural expressions.
+                    </p>
+                </div>
+
+                <div class="gallery-grid">
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1577083552431-6e5fd01aa342?auto=format&fit=crop&w=900&q=80" alt="Traditional Indian art" loading="lazy">
+                        <div class="gallery-caption">Traditional Art</div>
+                    </div>
+
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1504609813442-a8924e83f76e?auto=format&fit=crop&w=900&q=80" alt="Indian cultural festival" loading="lazy">
+                        <div class="gallery-caption">Festivals of India</div>
+                    </div>
+
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1531058020387-3be344556be6?auto=format&fit=crop&w=900&q=80" alt="Cultural performance" loading="lazy">
+                        <div class="gallery-caption">Cultural Performances</div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- ABOUT -->
-    <section class="about-section" id="about">
-        <div class="container about-grid">
-            <div class="about-image">
-                <img src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1100&q=85" alt="Indian cultural heritage" loading="lazy">
+        <!-- ABOUT -->
+        <section class="about-section" id="about">
+            <div class="container about-grid">
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1100&q=85" alt="Indian cultural heritage" loading="lazy">
+                </div>
+
+                <div class="about-content">
+                    <div class="eyebrow">Our Mission</div>
+
+                    <h2>Preserving India's Cultural Identity</h2>
+
+                    <p>
+                        LokSanskriti is a digital platform dedicated to documenting and celebrating India's rich cultural heritage.
+                    </p>
+
+                    <p>
+                        From traditional folk music and regional dances to indigenous crafts and oral traditions, our goal is to make cultural knowledge accessible to everyone.
+                    </p>
+
+                    <p>
+                        We believe that preserving traditions today helps future generations understand their roots.
+                    </p>
+
+                    <a href="#submit" class="btn btn-primary">Share Your Tradition</a>
+                </div>
             </div>
+        </section>
 
-            <div class="about-content">
-                <div class="eyebrow">Our Mission</div>
+        <!-- SUBMISSION FORM -->
+        <section class="submit-section" id="submit">
+            <div class="container">
 
-                <h2>Preserving India's Cultural Identity</h2>
+                <div class="section-heading">
+                    <div class="eyebrow">Community Contribution</div>
+                    <h2>Share Your Heritage</h2>
+                    <p>
+                        Help preserve India's cultural identity by contributing information about your local traditions.
+                    </p>
+                </div>
 
-                <p>
-                    LokSanskriti is a digital platform dedicated to documenting and celebrating India's rich cultural heritage.
-                </p>
+                <div class="form-container">
+                    <form id="traditionForm">
 
-                <p>
-                    From traditional folk music and regional dances to indigenous crafts and oral traditions, our goal is to make cultural knowledge accessible to everyone.
-                </p>
+                        <div class="form-grid">
 
-                <p>
-                    We believe that preserving traditions today helps future generations understand their roots.
-                </p>
+                            <div class="form-group">
+                                <label for="name">Tradition Name *</label>
+                                <input type="text" id="name" name="name" required placeholder="Enter tradition name">
+                            </div>
 
-                <a href="#submit" class="btn btn-primary">Share Your Tradition</a>
-            </div>
-        </div>
-    </section>
+                            <div class="form-group">
+                                <label for="state">State *</label>
+                                <input type="text" id="state" name="state" required placeholder="Enter state">
+                            </div>
 
-    <!-- SUBMISSION FORM -->
-    <section class="submit-section" id="submit">
-        <div class="container">
+                            <div class="form-group">
+                                <label for="district">District</label>
+                                <input type="text" id="district" name="district" placeholder="Enter district">
+                            </div>
 
-            <div class="section-heading">
-                <div class="eyebrow">Community Contribution</div>
-                <h2>Share Your Heritage</h2>
-                <p>
-                    Help preserve India's cultural identity by contributing information about your local traditions.
-                </p>
-            </div>
+                            <div class="form-group">
+                                <label for="language">Language *</label>
+                                <input type="text" id="language" name="language" required placeholder="Enter language">
+                            </div>
 
-            <div class="form-container">
-                <form id="traditionForm">
-
-                    <div class="form-grid">
-
-                        <div class="form-group">
-                            <label for="name">Tradition Name *</label>
-                            <input type="text" id="name" name="name" required placeholder="Enter tradition name">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="state">State *</label>
-                            <input type="text" id="state" name="state" required placeholder="Enter state">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="district">District</label>
-                            <input type="text" id="district" name="district" placeholder="Enter district">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="language">Language *</label>
-                            <input type="text" id="language" name="language" required placeholder="Enter language">
-                        </div>
-
-                        <div class="form-group full">
-                            <label for="category">Category *</label>
-                            <select id="category" name="category" required>
+                            <div class="form-group full">
+                                <label for="category">Category *</label>
+                                <select id="category" name="category" required>
                                 <option value="">Select category</option>
                                 <option value="Folk Music">Folk Music</option>
                                 <option value="Folk Dance">Folk Dance</option>
@@ -917,194 +928,194 @@
                                 <option value="Folk Song">Folk Song</option>
                                 <option value="Other">Other</option>
                             </select>
+                            </div>
+
+                            <div class="form-group full">
+                                <label for="description">Description *</label>
+                                <textarea id="description" name="description" required placeholder="Describe this tradition, its history and cultural importance..."></textarea>
+                            </div>
+
                         </div>
 
-                        <div class="form-group full">
-                            <label for="description">Description *</label>
-                            <textarea id="description" name="description" required placeholder="Describe this tradition, its history and cultural importance..."></textarea>
-                        </div>
-
-                    </div>
-
-                    <button type="submit" class="submit-button" id="submitButton">
+                        <button type="submit" class="submit-button" id="submitButton">
                         Submit Tradition
                     </button>
 
-                </form>
-            </div>
-        </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer>
-        <div class="container">
-
-            <div class="footer-content">
-                <div>
-                    <a href="#" class="logo">Lok<span>Sanskriti.</span></a>
-                    <p>
-                        A digital initiative to discover, document and preserve India's diverse cultural heritage for generations to come.
-                    </p>
-                </div>
-
-                <div class="footer-links">
-                    <a href="#home">Home</a>
-                    <a href="#explore">Explore</a>
-                    <a href="#map">Heritage Map</a>
-                    <a href="#gallery">Gallery</a>
-                    <a href="#submit">Contribute</a>
+                    </form>
                 </div>
             </div>
+        </section>
 
-            <div class="copyright">
-                © 2026 LokSanskriti. All Rights Reserved.
-                <br><br> Created with ❤️ by <strong>Arpit</strong>
-                <br> Email:
-                <a href="mailto:workwitharpitt@gmail.com" style="color: #e7a45e; text-decoration: none;">
+        <!-- FOOTER -->
+        <footer>
+            <div class="container">
+
+                <div class="footer-content">
+                    <div>
+                        <a href="#" class="logo">Lok<span>Sanskriti.</span></a>
+                        <p>
+                            A digital initiative to discover, document and preserve India's diverse cultural heritage for generations to come.
+                        </p>
+                    </div>
+
+                    <div class="footer-links">
+                        <a href="#home">Home</a>
+                        <a href="#explore">Explore</a>
+                        <a href="#map">Heritage Map</a>
+                        <a href="#gallery">Gallery</a>
+                        <a href="#submit">Contribute</a>
+                    </div>
+                </div>
+
+                <div class="copyright">
+                    © 2026 LokSanskriti. All Rights Reserved.
+                    <br><br> Created with ❤️ by <strong>Arpit</strong>
+                    <br> Email:
+                    <a href="mailto:workwitharpitt@gmail.com" style="color: #e7a45e; text-decoration: none;">
         workwitharpitt@gmail.com
     </a>
+                </div>
+
             </div>
+        </footer>
 
-        </div>
-    </footer>
+        <div id="toast"></div>
 
-    <div id="toast"></div>
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+        <script>
+            // BACKEND API
+            const API = "https://loksanskriti.onrender.com";
 
-    <script>
-        // BACKEND API
-        const API = "https://loksanskriti.onrender.com";
+            let allTraditions = [];
+            let heritageMap = null;
 
-        let allTraditions = [];
-        let heritageMap = null;
+            // SHOW MESSAGE
+            function showToast(message) {
+                const toast = document.getElementById("toast");
 
-        // SHOW MESSAGE
-        function showToast(message) {
-            const toast = document.getElementById("toast");
+                toast.textContent = message;
+                toast.classList.add("show");
 
-            toast.textContent = message;
-            toast.classList.add("show");
-
-            setTimeout(function() {
-                toast.classList.remove("show");
-            }, 3500);
-        }
-
-        // SAFE HTML
-        function escapeHTML(value) {
-            return String(value || "").replace(/[&<>"']/g, function(character) {
-                const characters = {
-                    "&": "&amp;",
-                    "<": "&lt;",
-                    ">": "&gt;",
-                    '"': "&quot;",
-                    "'": "&#039;"
-                };
-
-                return characters[character];
-            });
-        }
-
-        // LOAD STATS
-        async function loadStats() {
-            try {
-                const response = await fetch(API + "/api/stats");
-
-                if (!response.ok) {
-                    throw new Error("Stats error");
-                }
-
-                const s = await response.json();
-
-                document.getElementById("statTotal").textContent = s.traditions || "—";
-                document.getElementById("statStates").textContent = s.states || "—";
-                document.getElementById("statCategories").textContent = s.categories || "—";
-                document.getElementById("statPriority").textContent = s.priority || "—";
-
-            } catch (error) {
-                console.error("Stats unavailable:", error);
+                setTimeout(function() {
+                    toast.classList.remove("show");
+                }, 3500);
             }
-        }
 
-        // LOAD TRADITIONS FROM BACKEND
-        async function loadTraditions() {
-            const grid = document.getElementById("traditionGrid");
+            // SAFE HTML
+            function escapeHTML(value) {
+                return String(value || "").replace(/[&<>"']/g, function(character) {
+                    const characters = {
+                        "&": "&amp;",
+                        "<": "&lt;",
+                        ">": "&gt;",
+                        '"': "&quot;",
+                        "'": "&#039;"
+                    };
 
-            grid.innerHTML = '<div class="loading-message">Loading heritage records...</div>';
+                    return characters[character];
+                });
+            }
 
-            try {
-                const search = document.getElementById("searchInput").value.trim();
-                const state = document.getElementById("stateFilter").value;
+            // LOAD STATS
+            async function loadStats() {
+                try {
+                    const response = await fetch(API + "/api/stats");
 
-                const params = new URLSearchParams();
+                    if (!response.ok) {
+                        throw new Error("Stats error");
+                    }
 
-                if (search) {
-                    params.append("search", search);
+                    const s = await response.json();
+
+                    document.getElementById("statTotal").textContent = s.traditions || "—";
+                    document.getElementById("statStates").textContent = s.states || "—";
+                    document.getElementById("statCategories").textContent = s.categories || "—";
+                    document.getElementById("statPriority").textContent = s.priority || "—";
+
+                } catch (error) {
+                    console.error("Stats unavailable:", error);
                 }
+            }
 
-                if (state) {
-                    params.append("state", state);
-                }
+            // LOAD TRADITIONS FROM BACKEND
+            async function loadTraditions() {
+                const grid = document.getElementById("traditionGrid");
 
-                const response = await fetch(
-                    API + "/api/traditions?" + params.toString()
-                );
+                grid.innerHTML = '<div class="loading-message">Loading heritage records...</div>';
 
-                if (!response.ok) {
-                    throw new Error("Unable to load traditions");
-                }
+                try {
+                    const search = document.getElementById("searchInput").value.trim();
+                    const state = document.getElementById("stateFilter").value;
 
-                const data = await response.json();
+                    const params = new URLSearchParams();
 
-                allTraditions = Array.isArray(data) ? data : [];
+                    if (search) {
+                        params.append("search", search);
+                    }
 
-                renderTraditions();
+                    if (state) {
+                        params.append("state", state);
+                    }
 
-            } catch (error) {
-                console.error("Tradition loading error:", error);
+                    const response = await fetch(
+                        API + "/api/traditions?" + params.toString()
+                    );
 
-                grid.innerHTML = `
+                    if (!response.ok) {
+                        throw new Error("Unable to load traditions");
+                    }
+
+                    const data = await response.json();
+
+                    allTraditions = Array.isArray(data) ? data : [];
+
+                    renderTraditions();
+
+                } catch (error) {
+                    console.error("Tradition loading error:", error);
+
+                    grid.innerHTML = `
                     <div class="empty-message">
                         Unable to load heritage records.
                         Please refresh the page and try again.
                     </div>
                 `;
+                }
             }
-        }
 
-        // RENDER TRADITION CARDS
-        function renderTraditions() {
-            const grid = document.getElementById("traditionGrid");
+            // RENDER TRADITION CARDS
+            function renderTraditions() {
+                const grid = document.getElementById("traditionGrid");
 
-            const category = document.getElementById("categoryFilter").value;
-            const language = document.getElementById("languageFilter").value;
+                const category = document.getElementById("categoryFilter").value;
+                const language = document.getElementById("languageFilter").value;
 
-            const filtered = allTraditions.filter(function(item) {
-                const matchesCategory = !category || item.category === category;
-                const matchesLanguage = !language || item.language === language;
+                const filtered = allTraditions.filter(function(item) {
+                    const matchesCategory = !category || item.category === category;
+                    const matchesLanguage = !language || item.language === language;
 
-                return matchesCategory && matchesLanguage;
-            });
+                    return matchesCategory && matchesLanguage;
+                });
 
-            if (filtered.length === 0) {
-                grid.innerHTML = `
+                if (filtered.length === 0) {
+                    grid.innerHTML = `
                     <div class="empty-message">
                         No traditions found. Try another search or filter.
                     </div>
                 `;
-                return;
-            }
+                    return;
+                }
 
-            grid.innerHTML = filtered.map(function(item) {
-                const name = escapeHTML(item.name);
-                const state = escapeHTML(item.state);
-                const district = escapeHTML(item.district);
-                const language = escapeHTML(item.language);
-                const category = escapeHTML(item.category);
-                const description = escapeHTML(item.description || "Explore this unique cultural tradition of India.");
+                grid.innerHTML = filtered.map(function(item) {
+                    const name = escapeHTML(item.name);
+                    const state = escapeHTML(item.state);
+                    const district = escapeHTML(item.district);
+                    const language = escapeHTML(item.language);
+                    const category = escapeHTML(item.category);
+                    const description = escapeHTML(item.description || "Explore this unique cultural tradition of India.");
 
-                return `
+                    return `
                     <article class="tradition-card">
                         <div class="card-image">
                             <img
@@ -1129,140 +1140,140 @@
                         </div>
                     </article>
                 `;
-            }).join("");
-        }
-
-        // SEARCH BUTTON
-        document.getElementById("searchButton").addEventListener("click", function() {
-            loadTraditions();
-        });
-
-        // SEARCH WHEN ENTER IS PRESSED
-        document.getElementById("searchInput").addEventListener("keydown", function(event) {
-            if (event.key === "Enter") {
-                loadTraditions();
+                }).join("");
             }
-        });
 
-        // FILTER EVENTS
-        document.getElementById("stateFilter").addEventListener("change", function() {
-            loadTraditions();
-        });
+            // SEARCH BUTTON
+            document.getElementById("searchButton").addEventListener("click", function() {
+                loadTraditions();
+            });
 
-        document.getElementById("categoryFilter").addEventListener("change", function() {
-            renderTraditions();
-        });
+            // SEARCH WHEN ENTER IS PRESSED
+            document.getElementById("searchInput").addEventListener("keydown", function(event) {
+                if (event.key === "Enter") {
+                    loadTraditions();
+                }
+            });
 
-        document.getElementById("languageFilter").addEventListener("change", function() {
-            renderTraditions();
-        });
+            // FILTER EVENTS
+            document.getElementById("stateFilter").addEventListener("change", function() {
+                loadTraditions();
+            });
 
-        // SUBMIT TRADITION
-        document.getElementById("traditionForm").addEventListener("submit", async function(event) {
-            event.preventDefault();
+            document.getElementById("categoryFilter").addEventListener("change", function() {
+                renderTraditions();
+            });
 
-            const button = document.getElementById("submitButton");
+            document.getElementById("languageFilter").addEventListener("change", function() {
+                renderTraditions();
+            });
 
-            const payload = {
-                name: document.getElementById("name").value.trim(),
-                state: document.getElementById("state").value.trim(),
-                district: document.getElementById("district").value.trim(),
-                language: document.getElementById("language").value.trim(),
-                category: document.getElementById("category").value,
-                description: document.getElementById("description").value.trim()
-            };
+            // SUBMIT TRADITION
+            document.getElementById("traditionForm").addEventListener("submit", async function(event) {
+                event.preventDefault();
 
-            button.disabled = true;
-            button.textContent = "Submitting...";
+                const button = document.getElementById("submitButton");
 
-            try {
-                const response = await fetch(API + "/api/traditions", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(payload)
-                });
+                const payload = {
+                    name: document.getElementById("name").value.trim(),
+                    state: document.getElementById("state").value.trim(),
+                    district: document.getElementById("district").value.trim(),
+                    language: document.getElementById("language").value.trim(),
+                    category: document.getElementById("category").value,
+                    description: document.getElementById("description").value.trim()
+                };
 
-                const result = await response.json();
+                button.disabled = true;
+                button.textContent = "Submitting...";
 
-                if (!response.ok) {
-                    throw new Error(result.detail || "Submission failed");
+                try {
+                    const response = await fetch(API + "/api/traditions", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(payload)
+                    });
+
+                    const result = await response.json();
+
+                    if (!response.ok) {
+                        throw new Error(result.detail || "Submission failed");
+                    }
+
+                    showToast("Tradition submitted successfully!");
+
+                    document.getElementById("traditionForm").reset();
+
+                    await loadTraditions();
+                    await loadStats();
+
+                } catch (error) {
+                    console.error("Submission error:", error);
+                    showToast(error.message || "Unable to submit tradition.");
+                } finally {
+                    button.disabled = false;
+                    button.textContent = "Submit Tradition";
+                }
+            });
+
+            // INITIALIZE HERITAGE MAP
+            function initializeMap() {
+                if (typeof L === "undefined") {
+                    console.error("Leaflet map library did not load.");
+                    return;
                 }
 
-                showToast("Tradition submitted successfully!");
+                heritageMap = L.map("heritageMap").setView([22.5, 82.5], 4.5);
 
-                document.getElementById("traditionForm").reset();
+                L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+                    attribution: "&copy; OpenStreetMap contributors",
+                    maxZoom: 18
+                }).addTo(heritageMap);
 
-                await loadTraditions();
-                await loadStats();
+                const locations = [{
+                    name: "Bihar",
+                    coords: [25.0961, 85.3131]
+                }, {
+                    name: "Assam",
+                    coords: [26.2006, 92.9376]
+                }, {
+                    name: "Rajasthan",
+                    coords: [27.0238, 74.2179]
+                }, {
+                    name: "West Bengal",
+                    coords: [22.9868, 87.8550]
+                }, {
+                    name: "Odisha",
+                    coords: [20.9517, 85.0985]
+                }];
 
-            } catch (error) {
-                console.error("Submission error:", error);
-                showToast(error.message || "Unable to submit tradition.");
-            } finally {
-                button.disabled = false;
-                button.textContent = "Submit Tradition";
-            }
-        });
+                locations.forEach(function(location) {
+                    const marker = L.marker(location.coords).addTo(heritageMap);
 
-        // INITIALIZE HERITAGE MAP
-        function initializeMap() {
-            if (typeof L === "undefined") {
-                console.error("Leaflet map library did not load.");
-                return;
-            }
+                    marker.bindPopup(
+                        "<strong>" + escapeHTML(location.name) + "</strong><br>Explore traditions from this state."
+                    );
 
-            heritageMap = L.map("heritageMap").setView([22.5, 82.5], 4.5);
+                    marker.on("click", function() {
+                        document.getElementById("stateFilter").value = location.name;
+                        loadTraditions();
 
-            L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-                attribution: "&copy; OpenStreetMap contributors",
-                maxZoom: 18
-            }).addTo(heritageMap);
-
-            const locations = [{
-                name: "Bihar",
-                coords: [25.0961, 85.3131]
-            }, {
-                name: "Assam",
-                coords: [26.2006, 92.9376]
-            }, {
-                name: "Rajasthan",
-                coords: [27.0238, 74.2179]
-            }, {
-                name: "West Bengal",
-                coords: [22.9868, 87.8550]
-            }, {
-                name: "Odisha",
-                coords: [20.9517, 85.0985]
-            }];
-
-            locations.forEach(function(location) {
-                const marker = L.marker(location.coords).addTo(heritageMap);
-
-                marker.bindPopup(
-                    "<strong>" + escapeHTML(location.name) + "</strong><br>Explore traditions from this state."
-                );
-
-                marker.on("click", function() {
-                    document.getElementById("stateFilter").value = location.name;
-                    loadTraditions();
-
-                    document.getElementById("explore").scrollIntoView({
-                        behavior: "smooth"
+                        document.getElementById("explore").scrollIntoView({
+                            behavior: "smooth"
+                        });
                     });
                 });
+            }
+
+            // START APPLICATION
+            document.addEventListener("DOMContentLoaded", function() {
+                loadStats();
+                loadTraditions();
+                initializeMap();
             });
-        }
+        </script>
 
-        // START APPLICATION
-        document.addEventListener("DOMContentLoaded", function() {
-            loadStats();
-            loadTraditions();
-            initializeMap();
-        });
-    </script>
-
-</body>
+    </body>
 
 </html>
