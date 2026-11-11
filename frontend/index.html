@@ -5,6 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>LokSanskriti — Digital Heritage</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
     <style>
         * {
             box-sizing: border-box
@@ -12,14 +15,14 @@
         
         body {
             margin: 0;
-            font-family: Inter, system-ui, -apple-system, Segoe UI, sans-serif;
+            font-family: Inter, system-ui, Arial, sans-serif;
             background: #faf7f2;
             color: #201b18
         }
         
         nav {
             height: 72px;
-            background: #fff;
+            background: white;
             border-bottom: 1px solid #eee;
             display: flex;
             align-items: center;
@@ -27,7 +30,7 @@
             padding: 0 7%;
             position: sticky;
             top: 0;
-            z-index: 5
+            z-index: 1000
         }
         
         .logo {
@@ -48,7 +51,8 @@
         }
         
         .links a {
-            cursor: pointer
+            cursor: pointer;
+            text-decoration: none
         }
         
         .btn {
@@ -61,7 +65,7 @@
         
         .primary {
             background: #843b22;
-            color: #fff
+            color: white
         }
         
         .soft {
@@ -103,8 +107,7 @@
         .hero p {
             font-size: 18px;
             line-height: 1.7;
-            color: #6e6864;
-            max-width: 650px
+            color: #6e6864
         }
         
         .actions {
@@ -114,8 +117,8 @@
             flex-wrap: wrap
         }
         
-        .map {
-            background: #fff;
+        .hero-card {
+            background: white;
             border: 1px solid #eee;
             border-radius: 28px;
             padding: 30px;
@@ -123,9 +126,8 @@
             box-shadow: 0 20px 50px #5b30151a
         }
         
-        .flag {
-            font-size: 140px;
-            margin: 15px
+        .hero-card .flag {
+            font-size: 110px
         }
         
         section {
@@ -136,7 +138,8 @@
             display: flex;
             justify-content: space-between;
             align-items: end;
-            margin-bottom: 28px
+            margin-bottom: 28px;
+            gap: 20px
         }
         
         .head h2 {
@@ -152,7 +155,7 @@
         .search {
             display: flex;
             gap: 10px;
-            margin-bottom: 22px
+            margin-bottom: 15px
         }
         
         .search input {
@@ -160,14 +163,22 @@
             padding: 15px 17px;
             border: 1px solid #ddd;
             border-radius: 11px;
-            font-size: 15px
+            font-size: 15px;
+            min-width: 0
         }
         
-        .filters {
+        .filter-row {
             display: flex;
-            gap: 8px;
+            gap: 10px;
             flex-wrap: wrap;
-            margin-bottom: 25px
+            margin-bottom: 22px
+        }
+        
+        .filter-row select {
+            padding: 11px 14px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background: white
         }
         
         .filter {
@@ -178,6 +189,17 @@
             cursor: pointer
         }
         
+        .filter.active {
+            background: #843b22;
+            color: white
+        }
+        
+        .results {
+            color: #777;
+            font-size: 13px;
+            margin: 0 0 15px
+        }
+        
         .grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -185,7 +207,7 @@
         }
         
         .card {
-            background: #fff;
+            background: white;
             border: 1px solid #eee;
             border-radius: 18px;
             overflow: hidden;
@@ -228,12 +250,68 @@
             text-align: center;
             color: #888;
             padding: 30px;
-            grid-column: 1/-1
+            grid-column: 1/-1;
+            background: white;
+            border-radius: 15px
+        }
+        
+        .map-section {
+            background: #fff
+        }
+        
+        #indiaMap {
+            height: 480px;
+            width: 100%;
+            border-radius: 18px;
+            border: 1px solid #eee;
+            z-index: 1
+        }
+        
+        .map-note {
+            font-size: 13px;
+            color: #777;
+            margin-top: 12px
+        }
+        
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px
+        }
+        
+        .gallery-card {
+            height: 250px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 18px;
+            background: #ddd
+        }
+        
+        .gallery-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: .4s
+        }
+        
+        .gallery-card:hover img {
+            transform: scale(1.06)
+        }
+        
+        .gallery-label {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 35px 18px 18px;
+            color: white;
+            background: linear-gradient(transparent, #000b);
+            font-weight: 800
         }
         
         .preserve {
             background: #2c231e;
-            color: #fff;
+            color: white;
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 50px
@@ -245,7 +323,7 @@
         }
         
         .form {
-            background: #fff;
+            background: white;
             color: #222;
             border-radius: 20px;
             padding: 25px
@@ -284,7 +362,7 @@
         }
         
         .stat {
-            background: #fff;
+            background: white;
             border: 1px solid #eee;
             border-radius: 17px;
             padding: 22px
@@ -310,7 +388,8 @@
             padding: 30px 7%;
             display: flex;
             justify-content: space-between;
-            font-size: 13px
+            font-size: 13px;
+            gap: 15px
         }
         
         .toast {
@@ -322,7 +401,7 @@
             padding: 14px 18px;
             border-radius: 12px;
             display: none;
-            z-index: 20
+            z-index: 2000
         }
         
         @media(max-width:850px) {
@@ -330,7 +409,8 @@
             .preserve {
                 grid-template-columns: 1fr
             }
-            .grid {
+            .grid,
+            .gallery {
                 grid-template-columns: 1fr 1fr
             }
             .stats {
@@ -343,6 +423,7 @@
         
         @media(max-width:520px) {
             .grid,
+            .gallery,
             .stats {
                 grid-template-columns: 1fr
             }
@@ -352,27 +433,51 @@
                 padding-left: 5%;
                 padding-right: 5%
             }
+            .head {
+                align-items: flex-start;
+                flex-direction: column
+            }
+            .search {
+                flex-direction: column
+            }
+            #indiaMap {
+                height: 350px
+            }
+            footer {
+                flex-direction: column
+            }
         }
     </style>
 </head>
 
 <body>
+
     <nav>
         <div class="logo">Lok<span>Sanskriti</span></div>
-        <div class="links"><a onclick="go('explore')">Explore</a><a onclick="go('preserve')">Preserve</a><a onclick="go('risk')">Heritage at Risk</a></div>
+        <div class="links">
+            <a onclick="go('explore')">Explore</a>
+            <a onclick="go('mapSection')">India Map</a>
+            <a onclick="go('gallery')">Gallery</a>
+            <a onclick="go('preserve')">Preserve</a>
+        </div>
         <button class="btn primary" onclick="go('preserve')">Record Tradition</button>
     </nav>
 
     <header class="hero">
-        <div><span class="badge">🇮🇳 INDIA'S LIVING HERITAGE</span>
+        <div>
+            <span class="badge">🇮🇳 INDIA'S LIVING HERITAGE</span>
             <h1>Preserve the voices that <span>carry our culture.</span></h1>
             <p>A community-driven digital archive for India's folk songs, stories, languages, rituals and traditions — with an AI-ready backend.</p>
-            <div class="actions"><button class="btn primary" onclick="go('explore')">Explore India →</button><button class="btn soft" onclick="go('preserve')">🎤 Preserve a Tradition</button></div>
+            <div class="actions">
+                <button class="btn primary" onclick="go('explore')">Explore India →</button>
+                <button class="btn soft" onclick="go('preserve')">🎤 Preserve a Tradition</button>
+            </div>
         </div>
-        <div class="map">
+        <div class="hero-card">
             <div class="flag">🇮🇳</div>
-            <h3>Digital Heritage Map</h3>
-            <p style="color:#777">Explore traditions by state, language and category.</p>
+            <h3>India's Digital Heritage</h3>
+            <p style="color:#777">Discover traditions, languages and cultural stories from across India.</p>
+            <button class="btn soft" onclick="go('mapSection')">Explore State Map →</button>
         </div>
     </header>
 
@@ -380,32 +485,121 @@
         <div class="head">
             <div>
                 <h2>Explore Living Heritage</h2>
-                <p>Live data is loaded from the FastAPI backend.</p>
+                <p>Search and discover cultural traditions from India.</p>
             </div>
         </div>
-        <div class="search"><input id="q" placeholder="Search traditions, states, languages..." oninput="loadTraditions()"><button class="btn primary" onclick="loadTraditions()">🔎 Search</button></div>
-        <div class="filters"><button class="filter" onclick="filterState('')">All</button><button class="filter" onclick="filterState('Bihar')">Bihar</button><button class="filter" onclick="filterState('Assam')">Assam</button><button class="filter" onclick="filterState('Rajasthan')">Rajasthan</button>
-            <button
-                class="filter" onclick="filterState('West Bengal')">West Bengal</button>
+
+        <div class="search">
+            <input id="q" placeholder="Search traditions, states, languages..." oninput="scheduleSearch()">
+            <button class="btn primary" onclick="loadTraditions()">🔎 Search</button>
         </div>
+
+        <div class="filter-row">
+            <select id="categoryFilter" onchange="renderTraditions()">
+<option value="">All Categories</option>
+<option>Folk Song</option>
+<option>Folk Story</option>
+<option>Festival</option>
+<option>Folk Dance</option>
+<option>Craft</option>
+<option>Folk Music</option>
+<option>Other</option>
+</select>
+            <select id="languageFilter" onchange="renderTraditions()">
+<option value="">All Languages</option>
+<option>Hindi</option>
+<option>Bhojpuri</option>
+<option>Maithili</option>
+<option>Assamese</option>
+<option>Bengali</option>
+<option>Rajasthani</option>
+</select>
+            <button class="filter active" id="allFilter" onclick="filterState('')">All States</button>
+            <button class="filter" onclick="filterState('Bihar')">Bihar</button>
+            <button class="filter" onclick="filterState('Assam')">Assam</button>
+            <button class="filter" onclick="filterState('Rajasthan')">Rajasthan</button>
+            <button class="filter" onclick="filterState('West Bengal')">West Bengal</button>
+        </div>
+
+        <p class="results" id="resultCount">Loading records...</p>
         <div class="grid" id="cards">
             <div class="empty">Loading heritage records...</div>
         </div>
     </section>
 
-    <section class="preserve" id="preserve">
-        <div><span class="badge">PRESERVE A VOICE</span>
-            <h2 style="font-size:42px;line-height:1.1">Create a new digital heritage record.</h2>
-            <p>Submit a tradition to the backend database. In the next version, connect this form to speech-to-text, translation and AI summarisation.</p>
-            <p><b>Roadmap:</b> Audio → Speech-to-Text → Translation → AI Summary → Human Verification → Archive</p>
+    <section class="map-section" id="mapSection">
+        <div class="head">
+            <div>
+                <h2>Explore India's Heritage Map</h2>
+                <p>Select a state on the map to discover its cultural traditions.</p>
+            </div>
         </div>
+        <div id="indiaMap"></div>
+        <p class="map-note">Click a state on the map to filter the heritage archive. Map data requires an internet connection.</p>
+    </section>
+
+    <section id="gallery">
+        <div class="head">
+            <div>
+                <h2>Heritage Gallery</h2>
+                <p>A visual glimpse into India's diverse cultural traditions.</p>
+            </div>
+        </div>
+
+        <div class="gallery">
+            <div class="gallery-card">
+                <img src="https://images.unsplash.com/photo-1606293926075-69a00dbfde81?auto=format&fit=crop&w=900&q=80" alt="Indian architecture">
+                <div class="gallery-label">Indian Architecture</div>
+            </div>
+            <div class="gallery-card">
+                <img src="https://images.unsplash.com/photo-1531058020387-3be344556be6?auto=format&fit=crop&w=900&q=80" alt="Cultural celebration">
+                <div class="gallery-label">Cultural Celebrations</div>
+            </div>
+            <div class="gallery-card">
+                <img src="https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=900&q=80" alt="Traditional architecture">
+                <div class="gallery-label">Historic Places</div>
+            </div>
+            <div class="gallery-card">
+                <img src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=900&q=80" alt="Art and craft">
+                <div class="gallery-label">Art & Craft</div>
+            </div>
+            <div class="gallery-card">
+                <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80" alt="Indian landscape">
+                <div class="gallery-label">Cultural Landscapes</div>
+            </div>
+            <div class="gallery-card">
+                <img src="https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=900&q=80" alt="Nature and heritage">
+                <div class="gallery-label">Nature & Heritage</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="preserve" id="preserve">
+        <div>
+            <span class="badge">PRESERVE A VOICE</span>
+            <h2 style="font-size:42px;line-height:1.1">Create a new digital heritage record.</h2>
+            <p>Submit a tradition to the backend database and help preserve India's cultural knowledge.</p>
+            <p><b>Future roadmap:</b> Audio → Speech-to-Text → Translation → AI Summary → Human Verification → Archive</p>
+        </div>
+
         <div class="form">
-            <div class="field"><label>TRADITION NAME</label><input id="name" placeholder="e.g. Sohar"></div>
-            <div class="field"><label>STATE</label><input id="state" placeholder="e.g. Bihar"></div>
+            <div class="field"><label>TRADITION NAME *</label><input id="name" placeholder="e.g. Sohar"></div>
+            <div class="field"><label>STATE *</label><input id="state" placeholder="e.g. Bihar"></div>
             <div class="field"><label>DISTRICT</label><input id="district" placeholder="e.g. Madhubani"></div>
             <div class="field"><label>LANGUAGE</label><input id="language" placeholder="e.g. Bhojpuri"></div>
-            <div class="field"><label>CATEGORY</label><select id="category"><option>Folk Song</option><option>Folk Story</option><option>Festival</option><option>Folk Dance</option><option>Craft</option><option>Folk Music</option><option>Other</option></select></div>
-            <div class="field"><label>DESCRIPTION</label><textarea id="description" placeholder="Describe the tradition..."></textarea></div>
+            <div class="field">
+                <label>CATEGORY</label>
+                <select id="category">
+<option>Folk Song</option>
+<option>Folk Story</option>
+<option>Festival</option>
+<option>Folk Dance</option>
+<option>Craft</option>
+<option>Folk Music</option>
+<option>Other</option>
+</select>
+            </div>
+            <div class="field"><label>DESCRIPTION *</label><textarea id="description" placeholder="Describe the tradition..."></textarea></div>
             <button class="btn primary" style="width:100%" onclick="submitTradition()">Submit for Preservation</button>
         </div>
     </section>
@@ -414,7 +608,7 @@
         <div class="head">
             <div>
                 <h2>Heritage at a Glance</h2>
-                <p>Prototype indicators for documentation priorities.</p>
+                <p>Live indicators from the documentation database.</p>
             </div>
         </div>
         <div class="stats">
@@ -429,84 +623,241 @@
         <div>© 2026 LokSanskriti</div>
         <div>Preserve • Share • Learn • Pass it on 🇮🇳</div>
     </footer>
+
     <div class="toast" id="toast"></div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <script>
         const API = "https://loksanskriti.onrender.com";
+
         let selectedState = "";
+        let allTraditions = [];
+        let searchTimer;
 
         function go(id) {
             document.getElementById(id).scrollIntoView({
                 behavior: "smooth"
-            })
+            });
         }
 
-        function filterState(s) {
-            selectedState = s;
-            loadTraditions()
+        function show(message) {
+            const toast = document.getElementById("toast");
+            toast.textContent = message;
+            toast.style.display = "block";
+            setTimeout(() => toast.style.display = "none", 2800);
         }
+
+        function scheduleSearch() {
+            clearTimeout(searchTimer);
+            searchTimer = setTimeout(loadTraditions, 400);
+        }
+
+        function filterState(stateName) {
+            selectedState = stateName;
+            document.querySelectorAll(".filter").forEach(b => b.classList.remove("active"));
+
+            if (!stateName) {
+                document.getElementById("allFilter").classList.add("active");
+            } else {
+                document.querySelectorAll(".filter").forEach(b => {
+                    if (b.textContent.trim() === stateName) b.classList.add("active");
+                });
+            }
+
+            loadTraditions();
+            go("explore");
+        }
+
         async function loadTraditions() {
-            const q = document.getElementById("q").value;
-            const url = `${API}/api/traditions?search=${encodeURIComponent(q)}&state=${encodeURIComponent(selectedState)}`;
+            const query = document.getElementById("q").value.trim();
+            const url = `${API}/api/traditions?search=${encodeURIComponent(query)}&state=${encodeURIComponent(selectedState)}`;
+
+            const box = document.getElementById("cards");
+            box.innerHTML = '<div class="empty">Loading traditions...</div>';
+
             try {
-                const data = await fetch(url).then(r => r.json());
-                const box = document.getElementById("cards");
-                box.innerHTML = data.length ? data.map(t => `<article class="card"><div class="pic">${t.emoji}</div><div class="body"><small>${t.state.toUpperCase()} • ${t.language||"LOCAL"}</small><h3>${t.name}</h3><p>${t.description}</p><p><b>${t.category}</b> ${t.district?"• "+t.district:""}</p></div></article>`).join("") : '<div class="empty">No traditions found.</div>';
-            } catch (e) {
-                document.getElementById("cards").innerHTML = '<div class="empty">Backend is not running. Start FastAPI and refresh.</div>'
+                const response = await fetch(url);
+                if (!response.ok) throw new Error("API error");
+
+                const data = await response.json();
+                if (!Array.isArray(data)) throw new Error("Unexpected API response");
+
+                allTraditions = data;
+                renderTraditions();
+            } catch (error) {
+                box.innerHTML = '<div class="empty">Unable to load records. Please check the backend connection and try again.</div>';
+                document.getElementById("resultCount").textContent = "Could not load records.";
             }
         }
+
+        function renderTraditions() {
+            const category = document.getElementById("categoryFilter").value.toLowerCase();
+            const language = document.getElementById("languageFilter").value.toLowerCase();
+
+            const filtered = allTraditions.filter(t => {
+                const categoryMatch = !category || (t.category || "").toLowerCase() === category;
+                const languageMatch = !language || (t.language || "").toLowerCase() === language;
+                return categoryMatch && languageMatch;
+            });
+
+            const box = document.getElementById("cards");
+            document.getElementById("resultCount").textContent = `Showing ${filtered.length} tradition(s)`;
+
+            if (!filtered.length) {
+                box.innerHTML = '<div class="empty">No traditions found. Try changing your search or filters.</div>';
+                return;
+            }
+
+            box.innerHTML = filtered.map(t => `
+  <article class="card">
+   <div class="pic">${escapeHTML(t.emoji||"🏛️")}</div>
+   <div class="body">
+    <small>${escapeHTML((t.state||"INDIA").toUpperCase())} • ${escapeHTML(t.language||"LOCAL")}</small>
+    <h3>${escapeHTML(t.name||"Untitled tradition")}</h3>
+    <p>${escapeHTML(t.description||"No description available.")}</p>
+    <p><b>${escapeHTML(t.category||"Tradition")}</b> ${t.district?"• "+escapeHTML(t.district):""}</p>
+   </div>
+  </article>
+ `).join("");
+        }
+
+        function escapeHTML(value) {
+            return String(value).replace(/[&<>"']/g, char => ({
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#39;"
+            })[char]);
+        }
+
         async function loadStats() {
             try {
-                const s = await fetch(API + "/api/stats").then(r => r.json());
-                document.getElementById("statTotal").textContent = s.traditions;
-                document.getElementById("statStates").textContent = s.states;
-                document.getElementById("statCategories").textContent = s.categories;
-                document.getElementById("statPriority").textContent = s.priority
-            } catch (e) {}
+                const response = await fetch(API + "/api/stats");
+                if (!response.ok) throw new Error("Stats error");
+
+                const s = await response.json();
+                document.getElementById("statTotal").textContent = s.traditions ? ? "—";
+                document.getElementById("statStates").textContent = s.states ? ? "—";
+                document.getElementById("statCategories").textContent = s.categories ? ? "—";
+                document.getElementById("statPriority").textContent = s.priority ? ? "—";
+            } catch (error) {
+                console.log("Stats unavailable");
+            }
         }
+
         async function submitTradition() {
             const body = {
-                name: name.value.trim(),
-                state: state.value.trim(),
-                district: district.value.trim(),
-                language: language.value.trim(),
-                category: category.value,
-                description: description.value.trim(),
+                name: document.getElementById("name").value.trim(),
+                state: document.getElementById("state").value.trim(),
+                district: document.getElementById("district").value.trim(),
+                language: document.getElementById("language").value.trim(),
+                category: document.getElementById("category").value,
+                description: document.getElementById("description").value.trim(),
                 history: "",
                 emoji: "🇮🇳"
             };
+
             if (!body.name || !body.state || !body.description) {
-                show("Please enter name, state and description.");
-                return
+                show("Please enter tradition name, state and description.");
+                return;
             }
+
             try {
-                const r = await fetch(API + "/api/traditions", {
+                const response = await fetch(API + "/api/traditions", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify(body)
                 });
-                if (!r.ok) throw Error();
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(errorText);
+                }
+
                 show("Tradition submitted successfully!");
-                ["name", "state", "district", "language", "description"].forEach(x => document.getElementById(x).value = "");
-                loadTraditions();
-                loadStats()
-            } catch (e) {
-                show("Could not connect to backend. Start FastAPI first.")
+
+                ["name", "state", "district", "language", "description"].forEach(id => {
+                    document.getElementById(id).value = "";
+                });
+
+                await loadTraditions();
+                await loadStats();
+
+            } catch (error) {
+                console.error(error);
+                show("Submission failed. Please check the backend.");
             }
         }
 
-        function show(t) {
-            const x = document.getElementById("toast");
-            x.textContent = t;
-            x.style.display = "block";
-            setTimeout(() => x.style.display = "none", 2800)
+        // Interactive India map
+        function initIndiaMap() {
+            const map = L.map("indiaMap").setView([22.8, 82.5], 4);
+
+            L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+                attribution: '&copy; OpenStreetMap contributors',
+                maxZoom: 10
+            }).addTo(map);
+
+            const geoJSONURL = "https://raw.githubusercontent.com/geohacker/india/master/state/india_state.geojson";
+
+            fetch(geoJSONURL)
+                .then(response => {
+                    if (!response.ok) throw new Error("Map data unavailable");
+                    return response.json();
+                })
+                .then(data => {
+                    L.geoJSON(data, {
+                        style: {
+                            color: "#843b22",
+                            weight: 1.5,
+                            fillColor: "#dba568",
+                            fillOpacity: 0.55
+                        },
+                        onEachFeature: (feature, layer) => {
+                            const properties = feature.properties || {};
+                            const stateName = properties.NAME_1 || properties.name || properties.ST_NM || properties.NAME || "State";
+
+                            layer.bindTooltip(stateName);
+                            layer.on("mouseover", () => {
+                                layer.setStyle({
+                                    fillColor: "#843b22",
+                                    fillOpacity: 0.8
+                                });
+                            });
+                            layer.on("mouseout", () => {
+                                layer.setStyle({
+                                    fillColor: "#dba568",
+                                    fillOpacity: 0.55
+                                });
+                            });
+                            layer.on("click", () => {
+                                document.getElementById("q").value = "";
+                                document.getElementById("categoryFilter").value = "";
+                                document.getElementById("languageFilter").value = "";
+                                filterState(stateName);
+                            });
+                        }
+                    }).addTo(map);
+                })
+                .catch(error => {
+                    console.error("Map could not load:", error);
+                    document.getElementById("indiaMap").innerHTML =
+                        '<div style="padding:25px;text-align:center;color:#777">Map data could not load. Please check your internet connection.</div>';
+                });
         }
+
         loadTraditions();
         loadStats();
+
+        if (typeof L !== "undefined") {
+            initIndiaMap();
+        }
     </script>
+
 </body>
 
 </html>
