@@ -1,0 +1,9 @@
+venv/
+venv_msys/
+venv_old/
+venv_old_backup/
+__pycache__/
+*.pyc
+.env
+node_modules/
+dist/

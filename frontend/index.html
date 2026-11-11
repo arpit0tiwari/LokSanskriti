@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LokSanskriti — Digital Heritage</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;background:#faf7f2;color:#201b18}
+nav{height:72px;background:#fff;border-bottom:1px solid #eee;display:flex;align-items:center;justify-content:space-between;padding:0 7%;position:sticky;top:0;z-index:5}
+.logo{font-weight:900;font-size:24px;color:#843b22}.logo span{color:#c17a2b}.links{display:flex;gap:25px;color:#666;font-size:14px}.links a{cursor:pointer}.btn{border:0;border-radius:10px;padding:12px 18px;font-weight:800;cursor:pointer}.primary{background:#843b22;color:#fff}.soft{background:#f0e5d8;color:#71351f}
+.hero{padding:80px 7%;display:grid;grid-template-columns:1.15fr .85fr;gap:50px;align-items:center;background:linear-gradient(135deg,#fffaf1,#f2e9df)}
+.badge{display:inline-block;background:#ead7bf;color:#803a22;padding:7px 12px;border-radius:30px;font-size:11px;font-weight:900;letter-spacing:.6px}
+h1{font-size:clamp(42px,5.4vw,70px);line-height:1.02;letter-spacing:-2px;margin:18px 0}.hero h1 span{color:#b5672d}.hero p{font-size:18px;line-height:1.7;color:#6e6864;max-width:650px}.actions{display:flex;gap:10px;margin-top:26px;flex-wrap:wrap}
+.map{background:#fff;border:1px solid #eee;border-radius:28px;padding:30px;text-align:center;box-shadow:0 20px 50px #5b30151a}.flag{font-size:140px;margin:15px}
+section{padding:65px 7%}.head{display:flex;justify-content:space-between;align-items:end;margin-bottom:28px}.head h2{font-size:35px;margin:0}.head p{color:#777;line-height:1.6}
+.search{display:flex;gap:10px;margin-bottom:22px}.search input{flex:1;padding:15px 17px;border:1px solid #ddd;border-radius:11px;font-size:15px}.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:25px}.filter{border:0;background:#efe6dc;padding:9px 13px;border-radius:20px;cursor:pointer}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.card{background:#fff;border:1px solid #eee;border-radius:18px;overflow:hidden;transition:.2s}.card:hover{transform:translateY(-4px);box-shadow:0 15px 35px #00000010}.pic{height:145px;background:linear-gradient(135deg,#dba568,#843b22);display:grid;place-items:center;font-size:60px}.body{padding:19px}.body small{color:#a26731;font-weight:800}.body h3{margin:7px 0}.body p{color:#777;font-size:14px;line-height:1.55}.empty{text-align:center;color:#888;padding:30px;grid-column:1/-1}
+.preserve{background:#2c231e;color:#fff;display:grid;grid-template-columns:1fr 1fr;gap:50px}.preserve p{color:#d6cbc2;line-height:1.7}.form{background:#fff;color:#222;border-radius:20px;padding:25px}.field{margin:0 0 14px}.field label{display:block;font-size:11px;font-weight:900;margin-bottom:6px}.field input,.field select,.field textarea{width:100%;padding:12px;border:1px solid #ddd;border-radius:9px;font:inherit}.field textarea{min-height:80px;resize:vertical}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.stat{background:#fff;border:1px solid #eee;border-radius:17px;padding:22px}.stat b{font-size:35px;display:block;margin-top:6px}.green{color:#3e8050}.red{color:#a43d2f}
+footer{background:#17120f;color:#cfc4bb;padding:30px 7%;display:flex;justify-content:space-between;font-size:13px}
+.toast{position:fixed;right:20px;bottom:20px;background:#1f1a17;color:white;padding:14px 18px;border-radius:12px;display:none;z-index:20}
+@media(max-width:850px){.hero,.preserve{grid-template-columns:1fr}.grid{grid-template-columns:1fr 1fr}.stats{grid-template-columns:1fr 1fr}.links{display:none}}
+@media(max-width:520px){.grid,.stats{grid-template-columns:1fr}nav,section,.hero{padding-left:5%;padding-right:5%}}
+</style>
+</head>
+<body>
+<nav>
+<div class="logo">Lok<span>Sanskriti</span></div>
+<div class="links"><a onclick="go('explore')">Explore</a><a onclick="go('preserve')">Preserve</a><a onclick="go('risk')">Heritage at Risk</a></div>
+<button class="btn primary" onclick="go('preserve')">Record Tradition</button>
+</nav>
+
+<header class="hero">
+<div><span class="badge">🇮🇳 INDIA'S LIVING HERITAGE</span>
+<h1>Preserve the voices that <span>carry our culture.</span></h1>
+<p>A community-driven digital archive for India's folk songs, stories, languages, rituals and traditions — with an AI-ready backend.</p>
+<div class="actions"><button class="btn primary" onclick="go('explore')">Explore India →</button><button class="btn soft" onclick="go('preserve')">🎤 Preserve a Tradition</button></div></div>
+<div class="map"><div class="flag">🇮🇳</div><h3>Digital Heritage Map</h3><p style="color:#777">Explore traditions by state, language and category.</p></div>
+</header>
+
+<section id="explore">
+<div class="head"><div><h2>Explore Living Heritage</h2><p>Live data is loaded from the FastAPI backend.</p></div></div>
+<div class="search"><input id="q" placeholder="Search traditions, states, languages..." oninput="loadTraditions()"><button class="btn primary" onclick="loadTraditions()">🔎 Search</button></div>
+<div class="filters"><button class="filter" onclick="filterState('')">All</button><button class="filter" onclick="filterState('Bihar')">Bihar</button><button class="filter" onclick="filterState('Assam')">Assam</button><button class="filter" onclick="filterState('Rajasthan')">Rajasthan</button><button class="filter" onclick="filterState('West Bengal')">West Bengal</button></div>
+<div class="grid" id="cards"><div class="empty">Loading heritage records...</div></div>
+</section>
+
+<section class="preserve" id="preserve">
+<div><span class="badge">PRESERVE A VOICE</span><h2 style="font-size:42px;line-height:1.1">Create a new digital heritage record.</h2>
+<p>Submit a tradition to the backend database. In the next version, connect this form to speech-to-text, translation and AI summarisation.</p>
+<p><b>Roadmap:</b> Audio → Speech-to-Text → Translation → AI Summary → Human Verification → Archive</p></div>
+<div class="form">
+<div class="field"><label>TRADITION NAME</label><input id="name" placeholder="e.g. Sohar"></div>
+<div class="field"><label>STATE</label><input id="state" placeholder="e.g. Bihar"></div>
+<div class="field"><label>DISTRICT</label><input id="district" placeholder="e.g. Madhubani"></div>
+<div class="field"><label>LANGUAGE</label><input id="language" placeholder="e.g. Bhojpuri"></div>
+<div class="field"><label>CATEGORY</label><select id="category"><option>Folk Song</option><option>Folk Story</option><option>Festival</option><option>Folk Dance</option><option>Craft</option><option>Folk Music</option><option>Other</option></select></div>
+<div class="field"><label>DESCRIPTION</label><textarea id="description" placeholder="Describe the tradition..."></textarea></div>
+<button class="btn primary" style="width:100%" onclick="submitTradition()">Submit for Preservation</button>
+</div>
+</section>
+
+<section id="risk"><div class="head"><div><h2>Heritage at a Glance</h2><p>Prototype indicators for documentation priorities.</p></div></div>
+<div class="stats"><div class="stat">Traditions documented<b id="statTotal">—</b><span class="green">● Live database</span></div><div class="stat">States represented<b id="statStates">—</b><span class="green">● Growing archive</span></div><div class="stat">Categories<b id="statCategories">—</b><span class="green">● Indexed</span></div><div class="stat">Documentation priority<b id="statPriority">—</b><span class="red">● Needs attention</span></div></div></section>
+
+<footer><div>© 2026 LokSanskriti</div><div>Preserve • Share • Learn • Pass it on 🇮🇳</div></footer>
+<div class="toast" id="toast"></div>
+
+<script>
+const API="http://127.0.0.1:8000";
+let selectedState="";
+function go(id){document.getElementById(id).scrollIntoView({behavior:"smooth"})}
+function filterState(s){selectedState=s;loadTraditions()}
+async function loadTraditions(){
+ const q=document.getElementById("q").value;
+ const url=`${API}/api/traditions?search=${encodeURIComponent(q)}&state=${encodeURIComponent(selectedState)}`;
+ try{
+  const data=await fetch(url).then(r=>r.json());
+  const box=document.getElementById("cards");
+  box.innerHTML=data.length?data.map(t=>`<article class="card"><div class="pic">${t.emoji}</div><div class="body"><small>${t.state.toUpperCase()} • ${t.language||"LOCAL"}</small><h3>${t.name}</h3><p>${t.description}</p><p><b>${t.category}</b> ${t.district?"• "+t.district:""}</p></div></article>`).join(""):'<div class="empty">No traditions found.</div>';
+ }catch(e){document.getElementById("cards").innerHTML='<div class="empty">Backend is not running. Start FastAPI and refresh.</div>'}
+}
+async function loadStats(){
+ try{const s=await fetch(API+"/api/stats").then(r=>r.json());document.getElementById("statTotal").textContent=s.traditions;document.getElementById("statStates").textContent=s.states;document.getElementById("statCategories").textContent=s.categories;document.getElementById("statPriority").textContent=s.priority}catch(e){}
+}
+async function submitTradition(){
+ const body={name:name.value.trim(),state:state.value.trim(),district:district.value.trim(),language:language.value.trim(),category:category.value,description:description.value.trim(),history:"",emoji:"🇮🇳"};
+ if(!body.name||!body.state||!body.description){show("Please enter name, state and description.");return}
+ try{const r=await fetch(API+"/api/traditions",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});if(!r.ok)throw Error();show("Tradition submitted successfully!");["name","state","district","language","description"].forEach(x=>document.getElementById(x).value="");loadTraditions();loadStats()}catch(e){show("Could not connect to backend. Start FastAPI first.")}
+}
+function show(t){const x=document.getElementById("toast");x.textContent=t;x.style.display="block";setTimeout(()=>x.style.display="none",2800)}
+loadTraditions();loadStats();
+</script>
+</body>
+</html>
